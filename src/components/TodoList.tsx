@@ -1,16 +1,28 @@
 import { useState } from "react";
 import Todo from "./Todo";
-
+interface TodoItem{
+    id:string;
+    text: string;
+    completed: boolean;
+}
 export default function TodoList() {
-    const [todos, setTodos] = useState<string[]>([]);
+    const [todos, setTodos] = useState<TodoItem[]>([]);
     const [inputValue, setInputValue] = useState('');
     const handleAddTodo = () => {
         if (inputValue.trim() === '') return;
-        setTodos([...todos, inputValue.trim()])
+        const newTodo: TodoItem={
+            id:Date.now().toString(),
+            text:inputValue.trim(),
+            completed:false,
+        }
+        setTodos([...todos, newTodo])
         setInputValue('');
     }
-    const handleDeleteTodo = (index: number) =>{
-        setTodos(todos.filter((_,i)=>i!==index))
+    const handleDeleteTodo = (id: string) => {
+        setTodos(todos.filter(todo=> todo.id!==id));
+    }
+    const handleToggleTodo = (id:string)=>{
+        setTodos(todos.map(todo=>todo.id===id?{...todo,completed:!todo.completed}:todo));
     }
     return (
         <div className="flex flex-col items-center gap-4">
@@ -38,11 +50,13 @@ export default function TodoList() {
                 <p className="text-gray-500 text-center">할 일이 없습니다. 새로운 할 일을 추가해보세요!</p>
             ) : (
                 <ul className="w-full max-w-md space-y-2">
-                    {todos.map((todo, index) => (
-                        <Todo 
-                            key={index} 
-                            text={todo} 
-                            onDelete={() => handleDeleteTodo(index)}
+                    {todos.map((todo) => (
+                        <Todo
+                            key={todo.id}
+                            text={todo.text}
+                            completed={todo.completed}
+                            onDelete={() => handleDeleteTodo(todo.id)}
+                            onToggle={()=>handleToggleTodo(todo.id)}
                         />
                     ))}
                 </ul>
