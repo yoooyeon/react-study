@@ -8,7 +8,9 @@ export default function TodoList() {
         if (inputValue.trim() === '') return;
         setTodos([...todos, inputValue.trim()])
         setInputValue('');
-
+    }
+    const handleDeleteTodo = (index: number) =>{
+        setTodos(todos.filter((_,i)=>i!==index))
     }
     return (
         <div className="flex flex-col items-center gap-4">
@@ -37,7 +39,11 @@ export default function TodoList() {
             ) : (
                 <ul className="w-full max-w-md space-y-2">
                     {todos.map((todo, index) => (
-                        <Todo key={index} text={todo} />
+                        <Todo 
+                            key={index} 
+                            text={todo} 
+                            onDelete={() => handleDeleteTodo(index)}
+                        />
                     ))}
                 </ul>
             )}
