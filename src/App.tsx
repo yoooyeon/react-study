@@ -3,9 +3,6 @@ import { useState } from "react";
 import TodoEditor from "./components/TodoEditor"
 import TodoHeader from "./components/TodoHeader"
 import TodoList from "./components/TodoList"
-import Button from "./components/html/Button";
-import SvgClose from "./components/svg/SvgClose";
-import SvgPencil from "./components/svg/SvgPencil";
 
 function App() {
 
